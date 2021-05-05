@@ -89,3 +89,29 @@ plot(dates[1:n_months],result_ols[1:n_months,7], type="l")
 title("Coefficients for Research")
 plot(dates[1:n_months],result_ols[1:n_months,8], type="l") 
 title("Coefficients for Wellness Research")
+
+res <- as.data.frame(result_ols) #as data frame
+
+#plot coefficients of types of advertisers
+ggplot(res, aes(x=dates)) + 
+  geom_line(aes(y = Type.of.Advertiser_Clinic), color = "orange") + 
+  geom_line(aes(y = Type.of.Advertiser_Magazine), color="red") +
+  geom_line(aes(y = Type.of.Advertiser_Products), color="green")+
+  geom_line(aes(y = Type.of.Advertiser_Research), color="yellow") +
+  geom_line(aes(y = res$`Type.of.Advertiser_Gyms/Studio`), color="purple") +
+  geom_line(aes(y = res$`Type.of.Advertiser_Outdoor Workout`), color="blue") +
+  geom_line(aes(y = res$`Type.of.Advertiser_Wellness Research`), color="pink") +
+  ggtitle("Type of Advertisers") +
+  xlab("Date") + ylab("Coefficients") +
+  
+  
+#plot coefficients of types of devices    
+ggplot(res, aes(x=dates)) + 
+  geom_line(aes(y = res$`Device_Desktop Video`), color = "orange") + 
+  geom_line(aes(y = res$Device_Facebook), color="blue") +
+  geom_line(aes(y = res$Device_Instagram), color="purple")+
+  geom_line(aes(y = res$`Device_Mobile Display`), color="green") +
+  geom_line(aes(y = res$`Device_Mobile Video`), color="pink") +
+  geom_line(aes(y = res$Device_Twitter), color="red") +
+  ggtitle("Type of Device") +
+  xlab("Date") + ylab("Coefficients")   
