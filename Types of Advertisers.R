@@ -56,29 +56,36 @@ n_months <- length(dates)
 result_ols <- matrix(0,nrow=n_months,ncol = 15)
 rownames(result_ols) <- substr(unique(cfnw_panel$Date),1,7)
 colnames(result_ols) <- c("(Intercept)",names(cfnw_panel[-c(1:2,17:18)]))
+cfnw_panel <- na.omit(cfnw_panel)
+
+#loop to run a  regression and collect coefficients over time. 
 for (i in 1:n_months){
-
-##creating month specific dataset
-dat <- cfnw_panel %>%
-filter(YEAR==years(i) & MONTH == months(i))
-
-##month specific OLS
-loop_ols <- lm(formula= Spend ~ .,dat)
-
-##save coefficient in matrix
-result_ols[i,names(loop_ols$coefficients)] <- loop_ols$coefficients
+  
+  ##creating month specific dataset
+  dat <- cfnw_panel %>% 
+    filter(YEAR==years[i] & MONTH == months[i]) 
+    select(-c(1,17:18))
+  
+  ##month specific OLS
+  loop_ols <- lm(formula= Spend ~ .,dat)
+  
+  ##save coefficient in matrix
+  result_ols[i,] <- loop_ols$coefficients
 }
 
-##Plot coeffiencts over time
-plot(dates[1:n_months],result_ols[1:n_months,2], type="l")
-title("Coefficients for Type.of.Advertiser_Clinic")
-plot(dates[1:n_months],result_ols[1:n_months,3], type="l")
-title("Coefficients for Type.of.Advertiser_Gyms/Studios")
-plot(dates[1:n_months],result_ols[1:n_months,4], type="l")
-title("Coefficients for Type.of.Advertiser_Magazine")
-plot(dates[1:n_months],result_ols[1:n_months,5], type="l")
-title("Coefficients for Type.of.Advertiser_Outdoor Workout")
-plot(dates[1:n_months],result_ols[1:n_months,6], type="l")
-title("Coefficients for Type.of.Advertiser_Products")
-plot(dates[1:n_months],result_ols[1:n_months,7], type="l")
-title("Coefficients for Type.of.Advertiser_Research")
+##Plotting change in coefficinet over time for diffferent types of advertisers
+
+plot(dates[1:n_months],result_ols[1:n_months,2], type="l") 
+title("Coefficients for clinics")
+plot(dates[1:n_months],result_ols[1:n_months,3], type="l") 
+title("Coefficients for Gyms/Studios")
+plot(dates[1:n_months],result_ols[1:n_months,4], type="l") 
+title("Coefficients for Magazine")
+plot(dates[1:n_months],result_ols[1:n_months,5], type="l") 
+title("Coefficients for Outdoor Workout")
+plot(dates[1:n_months],result_ols[1:n_months,6], type="l") 
+title("Coefficients for Products")
+plot(dates[1:n_months],result_ols[1:n_months,7], type="l") 
+title("Coefficients for Research")
+plot(dates[1:n_months],result_ols[1:n_months,8], type="l") 
+title("Coefficients for Wellness Research")
